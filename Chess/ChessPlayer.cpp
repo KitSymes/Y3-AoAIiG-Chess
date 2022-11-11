@@ -11,7 +11,7 @@ using namespace std;
 void ChessPlayer::setupPlayers(ChessPlayer** playerWhite, ChessPlayer** playerBlack, Board* pBoard, GameStatus* pGameStatus, Gameplay* pGamePlay)
 {
 	*playerBlack = new ChessPlayer(pBoard, pGameStatus, pGamePlay, PieceColor::BLACK);
-	(*playerBlack)->setAI();
+	//(*playerBlack)->setAI();
 
 	*playerWhite = new ChessPlayer(pBoard, pGameStatus, pGamePlay, PieceColor::WHITE);
 	(*playerWhite)->setAI();
@@ -147,8 +147,10 @@ bool ChessPlayer::chooseAIMove(std::shared_ptr<Move>* moveToMake)
 		return true;
 	}*/
 
-	int value = maximise(m_pBoard, m_pGameStatus, moveToMake, 2);
-	if (moveToMake != nullptr)
+	int alpha = -9999;
+	int beta = 9999;
+	int value = maximise(m_pBoard, m_pGameStatus, moveToMake, 2, alpha, beta);
+	if (value > -9999)
 		return true;
 	/*int predictedMoves = 0;
 	std::shared_ptr<Move> best;
@@ -168,7 +170,7 @@ bool ChessPlayer::chooseAIMove(std::shared_ptr<Move>* moveToMake)
 	return false; // if there are no moves to make return false
 }
 
-int ChessPlayer::maximise(Board* board, GameStatus* status, std::shared_ptr<Move>* move, int depthLimit)
+int ChessPlayer::maximise(Board* board, GameStatus* status, std::shared_ptr<Move>* move, int depthLimit, int& alpha, int& beta)
 {
 	int max = -9999;
 
@@ -183,14 +185,14 @@ int ChessPlayer::maximise(Board* board, GameStatus* status, std::shared_ptr<Move
 
 	for (auto p : vPieces)
 	{
-		auto moves = getValidMovesForPiece(p);
+		auto moves = Gameplay::getValidMoves(status, board, p.piece, p.row, p.col);
 		for (auto m : moves)
 		{
 			Board* newBoard = board->hardCopy();
 			GameStatus* newStatus = new GameStatus(*status);
 			Gameplay::move(newStatus, newBoard, m);
 			std::shared_ptr<Move> nextMove;
-			int value = minimise(newBoard, newStatus, &nextMove, depthLimit - 1);
+			int value = minimise(newBoard, newStatus, &nextMove, depthLimit - 1, alpha, beta);
 
 			if (value > max)
 			{
@@ -200,13 +202,19 @@ int ChessPlayer::maximise(Board* board, GameStatus* status, std::shared_ptr<Move
 
 			delete newStatus;
 			delete newBoard;
+
+			if (max > alpha)
+				alpha = max;
+
+			if (max >= beta)
+				break;
 		}
 	}
 
 	return max;
 }
 
-int ChessPlayer::minimise(Board* board, GameStatus* status, std::shared_ptr<Move>* move, int depthLimit)
+int ChessPlayer::minimise(Board* board, GameStatus* status, std::shared_ptr<Move>* move, int depthLimit, int& alpha, int& beta)
 {
 	int min = 9999;
 
@@ -221,14 +229,14 @@ int ChessPlayer::minimise(Board* board, GameStatus* status, std::shared_ptr<Move
 
 	for (auto p : vPieces)
 	{
-		auto moves = getValidMovesForPiece(p);
+		auto moves = Gameplay::getValidMoves(status, board, p.piece, p.row, p.col);
 		for (auto m : moves)
 		{
 			Board* newBoard = board->hardCopy();
 			GameStatus* newStatus = new GameStatus(*status);
 			Gameplay::move(newStatus, newBoard, m);
 			std::shared_ptr<Move> nextMove;
-			int value = maximise(newBoard, newStatus, &nextMove, depthLimit - 1);
+			int value = maximise(newBoard, newStatus, &nextMove, depthLimit - 1, alpha, beta);
 
 			if (value < min)
 			{
@@ -238,6 +246,12 @@ int ChessPlayer::minimise(Board* board, GameStatus* status, std::shared_ptr<Move
 
 			delete newStatus;
 			delete newBoard;
+
+			if (min < beta)
+				beta = min;
+
+			if (min <= alpha)
+				break;
 		}
 	}
 
@@ -246,5 +260,48 @@ int ChessPlayer::minimise(Board* board, GameStatus* status, std::shared_ptr<Move
 
 int ChessPlayer::CalculateValue(Board* board, GameStatus* status)
 {
-	return 0;
+	int score = 0;
+	vecPieces myPieces;
+	unsigned int pieceCount = getAllLivePieces(myPieces, board);
+
+	for (auto piece : myPieces)
+	{
+		score += (int) piece.piece->getType();
+		if (2 == piece.row || piece.row == 5)
+			score += 5;
+		if (2 == piece.col || piece.col == 5)
+			score += 5;
+		if (3 == piece.row || piece.row == 4)
+			score += 10;
+		if (3 == piece.col || piece.col == 4)
+			score += 10;
+		auto moves = Gameplay::getValidMoves(status, board, piece.piece, piece.row, piece.col);
+		for (auto move : moves)
+		{
+			score++;
+			switch (move->getType())
+			{
+			case MoveType::CAPTURE:
+			case MoveType::EN_PASSANT:
+				score += 10;
+				break;
+			case MoveType::CASTLING:
+				score += 5;
+				break;
+			default:
+				break;
+			}
+		}
+		//score += Gameplay::getValidMoves(status, board, piece.piece, piece.row, piece.col).size();
+	}
+
+	vecPieces enemyPieces;
+	unsigned int enemyPieceCount = getAllLiveEnemyPieces(enemyPieces, board);
+	for (auto piece : enemyPieces)
+	{
+		score -= (int)piece.piece->getType();
+		//score -= Gameplay::getValidMoves(status, board, piece.piece, piece.row, piece.col).size();
+	}
+
+	return score;
 }

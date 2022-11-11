@@ -46,8 +46,8 @@ private:
 	Gameplay*	m_pGamePlay;
 	bool		m_bAI;
 
-	int maximise(Board* board, GameStatus* status, std::shared_ptr<Move>* move, int depthLimit);
-	int minimise(Board* board, GameStatus* status, std::shared_ptr<Move>* move, int depthLimit);
+	int maximise(Board* board, GameStatus* status, std::shared_ptr<Move>* move, int depthLimit, int& alpha, int& beta);
+	int minimise(Board* board, GameStatus* status, std::shared_ptr<Move>* move, int depthLimit, int& alpha, int& beta);
 	int CalculateValue(Board* board, GameStatus* status);
 };
 
