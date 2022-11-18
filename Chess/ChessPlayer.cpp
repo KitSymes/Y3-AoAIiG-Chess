@@ -3,6 +3,8 @@
 #include "Chess\Gameplay.h"
 #include "Chess\Board.h"
 #include "Chess\Piece.h"
+#include <chrono>
+#include <iostream>
 
 using namespace std;
 
@@ -133,7 +135,7 @@ bool ChessPlayer::chooseAIMove(std::shared_ptr<Move>* moveToMake)
 	{
 		randomPiece = rand() % vPieces.size(); // choose a random chess piece
 		vector<std::shared_ptr<Move>> moves = getValidMovesForPiece(vPieces[randomPiece]); // get all the valid moves for this piece if any)
-		if (moves.size() > 0) // if there is a valid move exit this loop - we have a candidate 
+		if (moves.size() > 0) // if there is a valid move exit this loop - we have a candidate
 			moveAvailable = true;
 	}
 
@@ -147,11 +149,24 @@ bool ChessPlayer::chooseAIMove(std::shared_ptr<Move>* moveToMake)
 		return true;
 	}*/
 
-	int alpha = -9999;
-	int beta = 9999;
-	int value = maximise(m_pBoard, m_pGameStatus, moveToMake, 2, alpha, beta);
-	if (value > -9999)
-		return true;
+	int alpha = -100000;
+	int beta = 100000;
+
+	/*long long total = 0; int count = 0;
+
+	for (int i = 0; i < 10; i++)
+	{
+		std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+		int value = maximise(m_pBoard, m_pGameStatus, moveToMake, 3, alpha, beta);
+		std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+
+		std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << "[ms]" << std::endl;
+		count++;
+		total += std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count();
+	}
+	std::cout << "Average: " << (total / count) << std::endl;*/
+	int value = maximise(m_pBoard, m_pGameStatus, moveToMake, 3, alpha, beta);
+	return true;
 	/*int predictedMoves = 0;
 	std::shared_ptr<Move> best;
 	for (PieceInPostion p : vPieces)
@@ -167,12 +182,12 @@ bool ChessPlayer::chooseAIMove(std::shared_ptr<Move>* moveToMake)
 		}
 	}*/
 
-	return false; // if there are no moves to make return false
+	//return false; // if there are no moves to make return false
 }
 
-int ChessPlayer::maximise(Board* board, GameStatus* status, std::shared_ptr<Move>* move, int depthLimit, int& alpha, int& beta)
+int ChessPlayer::maximise(Board* board, GameStatus* status, std::shared_ptr<Move>* move, int depthLimit, int alpha, int beta)
 {
-	int max = -9999;
+	int max = -99999;
 
 	if (Gameplay::isCheckMateState(status, board, m_colour))
 		return max;
@@ -207,16 +222,16 @@ int ChessPlayer::maximise(Board* board, GameStatus* status, std::shared_ptr<Move
 				alpha = max;
 
 			if (max >= beta)
-				break;
+				return max;
 		}
 	}
 
 	return max;
 }
 
-int ChessPlayer::minimise(Board* board, GameStatus* status, std::shared_ptr<Move>* move, int depthLimit, int& alpha, int& beta)
+int ChessPlayer::minimise(Board* board, GameStatus* status, std::shared_ptr<Move>* move, int depthLimit, int alpha, int beta)
 {
-	int min = 9999;
+	int min = 99999;
 
 	if (Gameplay::isCheckMateState(status, board, m_colour == PieceColor::WHITE ? PieceColor::BLACK : PieceColor::WHITE))
 		return min;
@@ -251,7 +266,7 @@ int ChessPlayer::minimise(Board* board, GameStatus* status, std::shared_ptr<Move
 				beta = min;
 
 			if (min <= alpha)
-				break;
+				return min;
 		}
 	}
 
@@ -266,7 +281,7 @@ int ChessPlayer::CalculateValue(Board* board, GameStatus* status)
 
 	for (auto piece : myPieces)
 	{
-		score += (int) piece.piece->getType();
+		score += (int)piece.piece->getType();
 		if (2 == piece.row || piece.row == 5)
 			score += 5;
 		if (2 == piece.col || piece.col == 5)
