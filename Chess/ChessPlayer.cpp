@@ -283,25 +283,25 @@ int ChessPlayer::CalculateValue(Board* board, GameStatus* status)
 	{
 		score += (int)piece.piece->getType();
 		if (2 == piece.row || piece.row == 5)
-			score += 5;
+			score += 2;
 		if (2 == piece.col || piece.col == 5)
-			score += 5;
+			score += 2;
 		if (3 == piece.row || piece.row == 4)
-			score += 10;
+			score += 5;
 		if (3 == piece.col || piece.col == 4)
-			score += 10;
+			score += 5;
 		auto moves = Gameplay::getValidMoves(status, board, piece.piece, piece.row, piece.col);
 		for (auto move : moves)
 		{
-			score++;
+			score += 0.5f;
 			switch (move->getType())
 			{
 			case MoveType::CAPTURE:
 			case MoveType::EN_PASSANT:
-				score += 10;
+				score += 5;
 				break;
 			case MoveType::CASTLING:
-				score += 5;
+				score += 2;
 				break;
 			default:
 				break;
