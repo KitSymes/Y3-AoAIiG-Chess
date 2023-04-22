@@ -49,5 +49,7 @@ private:
 	int maximise(Board* board, GameStatus* status, std::shared_ptr<Move>* move, int depthLimit, int alpha, int beta);
 	int minimise(Board* board, GameStatus* status, std::shared_ptr<Move>* move, int depthLimit, int alpha, int beta);
 	int CalculateValue(Board* board, GameStatus* status);
+	int CustomEvaluation(Board* board, GameStatus* status);
+	int ShannonEvaluation(Board* board, GameStatus* status, PieceColor colour);
 };
 
