@@ -27,6 +27,197 @@ ChessPlayer::ChessPlayer(Board* pBoard, GameStatus* pGameStatus, Gameplay* pGame
 	m_pGameStatus = pGameStatus;
 	m_pGamePlay = pGamePlay;
 	m_bAI = false;
+
+	/*
+	Playbook templatePB;
+	templatePB.name = "";
+	templatePB.moves.push_back(PlaybookMove{ PieceType::PAWN, 0, 0 });
+	m_playbooks.push_back(templatePB);
+	*/
+
+	// Pawn to E4
+
+	Playbook spanishOpening;
+	spanishOpening.name = "Ruy Lopez Opening";
+	spanishOpening.moves.push_back(PlaybookMove{ PieceType::PAWN, 4, 3 });
+	spanishOpening.moves.push_back(PlaybookMove{ PieceType::PAWN, 4, 4 });
+	spanishOpening.moves.push_back(PlaybookMove{ PieceType::KNIGHT, 5, 2 });
+	spanishOpening.moves.push_back(PlaybookMove{ PieceType::KNIGHT, 2, 5 });
+	spanishOpening.moves.push_back(PlaybookMove{ PieceType::BISHOP, 1, 4 });
+	m_playbooks.push_back(spanishOpening);
+
+	Playbook sicilianDefense;
+	sicilianDefense.name = "Sicilian Defense";
+	sicilianDefense.moves.push_back(PlaybookMove{ PieceType::PAWN, 4, 3 });
+	sicilianDefense.moves.push_back(PlaybookMove{ PieceType::PAWN, 2, 4 });
+	m_playbooks.push_back(sicilianDefense);
+
+	Playbook frenchDefense;
+	frenchDefense.name = "French Defense";
+	frenchDefense.moves.push_back(PlaybookMove{ PieceType::PAWN, 4, 3 });
+	frenchDefense.moves.push_back(PlaybookMove{ PieceType::PAWN, 4, 5 });
+	m_playbooks.push_back(frenchDefense);
+
+	Playbook caroKannDefense;
+	caroKannDefense.name = "Caro-Kann Defense";
+	caroKannDefense.moves.push_back(PlaybookMove{ PieceType::PAWN, 4, 3 });
+	caroKannDefense.moves.push_back(PlaybookMove{ PieceType::PAWN, 3, 5 });
+	m_playbooks.push_back(caroKannDefense);
+
+	Playbook italianGame;
+	italianGame.name = "Italian Game";
+	italianGame.moves.push_back(PlaybookMove{ PieceType::PAWN, 4, 3 });
+	italianGame.moves.push_back(PlaybookMove{ PieceType::KNIGHT, 5, 2 });
+	italianGame.moves.push_back(PlaybookMove{ PieceType::KNIGHT, 2, 5 });
+	italianGame.moves.push_back(PlaybookMove{ PieceType::BISHOP, 2, 3 });
+	m_playbooks.push_back(italianGame);
+
+	Playbook scandinavianDefense;
+	scandinavianDefense.name = "ScandinavianDefense";
+	scandinavianDefense.moves.push_back(PlaybookMove{ PieceType::PAWN, 4, 3 });
+	scandinavianDefense.moves.push_back(PlaybookMove{ PieceType::PAWN, 3, 4 });
+	m_playbooks.push_back(scandinavianDefense);
+
+	Playbook pircDefense;
+	pircDefense.name = "Pirc Defense";
+	pircDefense.moves.push_back(PlaybookMove{ PieceType::PAWN, 4, 3 });
+	pircDefense.moves.push_back(PlaybookMove{ PieceType::PAWN, 3, 5 });
+	pircDefense.moves.push_back(PlaybookMove{ PieceType::PAWN, 3, 3 });
+	pircDefense.moves.push_back(PlaybookMove{ PieceType::KNIGHT, 5, 5 });
+	m_playbooks.push_back(pircDefense);
+
+	Playbook AlekhinesDefense;
+	AlekhinesDefense.name = "Alekhine's Defense";
+	AlekhinesDefense.moves.push_back(PlaybookMove{ PieceType::PAWN, 4, 3 });
+	AlekhinesDefense.moves.push_back(PlaybookMove{ PieceType::KNIGHT, 5, 5 });
+	m_playbooks.push_back(AlekhinesDefense);
+
+	Playbook kingsGambit;
+	kingsGambit.name = "King's Gambit";
+	kingsGambit.moves.push_back(PlaybookMove{ PieceType::PAWN, 4, 3 });
+	kingsGambit.moves.push_back(PlaybookMove{ PieceType::PAWN, 4, 4 });
+	kingsGambit.moves.push_back(PlaybookMove{ PieceType::PAWN, 5, 3 });
+	m_playbooks.push_back(kingsGambit);
+
+	Playbook scotchGame;
+	scotchGame.name = "Scotch Game";
+	scotchGame.moves.push_back(PlaybookMove{ PieceType::PAWN, 4, 3 });
+	scotchGame.moves.push_back(PlaybookMove{ PieceType::PAWN, 4, 4 });
+	scotchGame.moves.push_back(PlaybookMove{ PieceType::KNIGHT, 5, 2 });
+	scotchGame.moves.push_back(PlaybookMove{ PieceType::KNIGHT, 2, 5 });
+	scotchGame.moves.push_back(PlaybookMove{ PieceType::PAWN, 3, 3 });
+	m_playbooks.push_back(scotchGame);
+
+	Playbook viennaGame;
+	viennaGame.name = "Vienna Game";
+	viennaGame.moves.push_back(PlaybookMove{ PieceType::PAWN, 4, 3 });
+	viennaGame.moves.push_back(PlaybookMove{ PieceType::PAWN, 4, 4 });
+	viennaGame.moves.push_back(PlaybookMove{ PieceType::KNIGHT, 2, 2 });
+	m_playbooks.push_back(viennaGame);
+
+	// Pawn to D4
+
+	Playbook queensGambit;
+	queensGambit.name = "Queen's Gambit";
+	queensGambit.moves.push_back(PlaybookMove{ PieceType::PAWN, 3, 3 });
+	queensGambit.moves.push_back(PlaybookMove{ PieceType::PAWN, 3, 4 });
+	queensGambit.moves.push_back(PlaybookMove{ PieceType::PAWN, 2, 3 });
+	m_playbooks.push_back(queensGambit);
+
+	Playbook slavDefense;
+	slavDefense.name = "Slav Defense";
+	slavDefense.moves.push_back(PlaybookMove{ PieceType::PAWN, 3, 3 });
+	slavDefense.moves.push_back(PlaybookMove{ PieceType::PAWN, 3, 4 });
+	slavDefense.moves.push_back(PlaybookMove{ PieceType::PAWN, 2, 3 });
+	slavDefense.moves.push_back(PlaybookMove{ PieceType::PAWN, 2, 5 });
+	m_playbooks.push_back(slavDefense);
+
+	Playbook kingsIndianDefense;
+	kingsIndianDefense.name = "King's Indian Defense";
+	kingsIndianDefense.moves.push_back(PlaybookMove{ PieceType::PAWN, 3, 3 });
+	kingsIndianDefense.moves.push_back(PlaybookMove{ PieceType::KNIGHT, 5, 5 });
+	kingsIndianDefense.moves.push_back(PlaybookMove{ PieceType::PAWN, 2, 3 });
+	kingsIndianDefense.moves.push_back(PlaybookMove{ PieceType::PAWN, 6, 5 });
+	m_playbooks.push_back(kingsIndianDefense);
+
+	Playbook nimzoIndianDefense;
+	nimzoIndianDefense.name = "Nimzo-Indian Defense";
+	nimzoIndianDefense.moves.push_back(PlaybookMove{ PieceType::PAWN, 3, 3 });
+	nimzoIndianDefense.moves.push_back(PlaybookMove{ PieceType::KNIGHT, 5, 5 });
+	nimzoIndianDefense.moves.push_back(PlaybookMove{ PieceType::PAWN, 2, 3 });
+	nimzoIndianDefense.moves.push_back(PlaybookMove{ PieceType::PAWN, 4, 5 });
+	nimzoIndianDefense.moves.push_back(PlaybookMove{ PieceType::KNIGHT, 2, 2 });
+	nimzoIndianDefense.moves.push_back(PlaybookMove{ PieceType::BISHOP, 1, 3 });
+	m_playbooks.push_back(nimzoIndianDefense);
+
+	Playbook queensIndianDefense;
+	queensIndianDefense.name = "Queen's Indian Defense";
+	queensIndianDefense.moves.push_back(PlaybookMove{ PieceType::PAWN, 3, 3 });
+	queensIndianDefense.moves.push_back(PlaybookMove{ PieceType::KNIGHT, 5, 5 });
+	queensIndianDefense.moves.push_back(PlaybookMove{ PieceType::PAWN, 2, 3 });
+	queensIndianDefense.moves.push_back(PlaybookMove{ PieceType::PAWN, 4, 5 });
+	queensIndianDefense.moves.push_back(PlaybookMove{ PieceType::KNIGHT, 5, 2 });
+	queensIndianDefense.moves.push_back(PlaybookMove{ PieceType::PAWN, 1, 5 });
+	m_playbooks.push_back(queensIndianDefense);
+
+	Playbook catalanOpening;
+	catalanOpening.name = "Catalan Opening";
+	catalanOpening.moves.push_back(PlaybookMove{ PieceType::PAWN, 3, 3 });
+	catalanOpening.moves.push_back(PlaybookMove{ PieceType::KNIGHT, 5, 5 });
+	catalanOpening.moves.push_back(PlaybookMove{ PieceType::PAWN, 2, 3 });
+	catalanOpening.moves.push_back(PlaybookMove{ PieceType::PAWN, 4, 5 });
+	catalanOpening.moves.push_back(PlaybookMove{ PieceType::PAWN, 6, 2 });
+	m_playbooks.push_back(catalanOpening);
+
+	Playbook bogoIndianDefense;
+	bogoIndianDefense.name = "Bogo-Indian Defense";
+	bogoIndianDefense.moves.push_back(PlaybookMove{ PieceType::PAWN, 3, 3 });
+	bogoIndianDefense.moves.push_back(PlaybookMove{ PieceType::KNIGHT, 5, 5 });
+	bogoIndianDefense.moves.push_back(PlaybookMove{ PieceType::PAWN, 2, 3 });
+	bogoIndianDefense.moves.push_back(PlaybookMove{ PieceType::PAWN, 4, 5 });
+	bogoIndianDefense.moves.push_back(PlaybookMove{ PieceType::KNIGHT, 5, 2 });
+	bogoIndianDefense.moves.push_back(PlaybookMove{ PieceType::BISHOP, 1, 3 });
+	m_playbooks.push_back(bogoIndianDefense);
+
+	Playbook grunfeldDefense;
+	grunfeldDefense.name = "Grunfeld Defense";
+	grunfeldDefense.moves.push_back(PlaybookMove{ PieceType::PAWN, 3, 3 });
+	grunfeldDefense.moves.push_back(PlaybookMove{ PieceType::KNIGHT, 5, 5 });
+	grunfeldDefense.moves.push_back(PlaybookMove{ PieceType::PAWN, 2, 3 });
+	grunfeldDefense.moves.push_back(PlaybookMove{ PieceType::PAWN, 6, 5 });
+	grunfeldDefense.moves.push_back(PlaybookMove{ PieceType::KNIGHT, 2, 2 });
+	grunfeldDefense.moves.push_back(PlaybookMove{ PieceType::PAWN, 3, 4 });
+	m_playbooks.push_back(grunfeldDefense);
+
+	Playbook dutchDefense;
+	dutchDefense.name = "Dutch Defense";
+	dutchDefense.moves.push_back(PlaybookMove{ PieceType::PAWN, 3, 3 });
+	dutchDefense.moves.push_back(PlaybookMove{ PieceType::PAWN, 5, 4 });
+	m_playbooks.push_back(dutchDefense);
+
+	Playbook trompowskyAttack;
+	trompowskyAttack.name = "Trompowsky Attack";
+	trompowskyAttack.moves.push_back(PlaybookMove{ PieceType::PAWN, 3, 3 });
+	trompowskyAttack.moves.push_back(PlaybookMove{ PieceType::KNIGHT, 5, 5 });
+	trompowskyAttack.moves.push_back(PlaybookMove{ PieceType::BISHOP, 6, 4 });
+	m_playbooks.push_back(trompowskyAttack);
+
+	Playbook benkoGambit;
+	benkoGambit.name = "Benko Gambit";
+	benkoGambit.moves.push_back(PlaybookMove{ PieceType::PAWN, 3, 3 });
+	benkoGambit.moves.push_back(PlaybookMove{ PieceType::KNIGHT, 5, 5 });
+	benkoGambit.moves.push_back(PlaybookMove{ PieceType::PAWN, 2, 3 });
+	benkoGambit.moves.push_back(PlaybookMove{ PieceType::PAWN, 2, 4 });
+	benkoGambit.moves.push_back(PlaybookMove{ PieceType::PAWN, 3, 4 });
+	benkoGambit.moves.push_back(PlaybookMove{ PieceType::PAWN, 1, 4 });
+	m_playbooks.push_back(benkoGambit);
+
+	m_maxPlaybookMoveCount = 0;
+	for (Playbook playbook : m_playbooks)
+	{
+		if (playbook.moves.size() > m_maxPlaybookMoveCount)
+			m_maxPlaybookMoveCount = playbook.moves.size();
+	}
 }
 
 unsigned int ChessPlayer::getAllLivePieces(vecPieces& vpieces)
@@ -128,6 +319,60 @@ bool ChessPlayer::chooseAIMove(std::shared_ptr<Move>* moveToMake)
 	int alpha = -100000;
 	int beta = 100000;
 
+	if (m_gameMoves.size() < m_maxPlaybookMoveCount)
+	{
+		vector<Playbook> books;
+
+		for (Playbook playbook : m_playbooks)
+		{
+			if (playbook.moves.size() <= m_gameMoves.size())
+				continue;
+
+			bool matches = true;
+			for (int i = 0; i < m_gameMoves.size(); i++)
+				if (m_gameMoves[i] != playbook.moves[i])
+				{
+					matches = false;
+					break;
+				}
+
+			if (matches)
+			{
+				books.push_back(playbook);
+			}
+		}
+
+		if (books.size() > 0)
+		{
+			// TODO
+			cout << "Playbooks Available: " << books.size() << endl;
+			vecPieces vPieces;
+			unsigned int piecesAvailable = getAllLivePieces(vPieces, m_pBoard);
+
+			Playbook chosen = books[rand() % books.size()];
+			PlaybookMove nextMove = chosen.moves[m_gameMoves.size()];
+			cout << "Playing " << chosen.name << endl;
+			for (PieceInPostion piece : vPieces)
+			{
+				if (piece.piece->getType() != nextMove.pieceType)
+					continue;
+				vector<shared_ptr<Move>> moves = Gameplay::getValidMoves(m_pGameStatus, m_pBoard, piece.piece, piece.row, piece.col);
+				for (shared_ptr<Move> move : moves)
+				{
+					int moveToRow = move->getDestinationPosition().first;
+					int moveToCol = move->getDestinationPosition().second;
+
+					if (moveToRow != nextMove.row || moveToCol != nextMove.column)
+						continue;
+
+					*moveToMake = move;
+					return true;
+				}
+			}
+			cout << "Failed??" << endl;
+		}
+	}
+
 	std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
 	int value = maximise(m_pBoard, m_pGameStatus, moveToMake, 3, alpha, beta);
 	std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
@@ -141,9 +386,9 @@ bool ChessPlayer::chooseAIMove(std::shared_ptr<Move>* moveToMake)
 
 	vecPieces vPieces;
 	unsigned int piecesAvailable = getAllLivePieces(vPieces, m_pBoard);
-	for (auto a : vPieces)
+	for (PieceInPostion piece : vPieces)
 	{
-		std::vector<std::shared_ptr<Move>> moves = Gameplay::getValidMoves(m_pGameStatus, m_pBoard, a.piece, a.row, a.col);
+		std::vector<std::shared_ptr<Move>> moves = Gameplay::getValidMoves(m_pGameStatus, m_pBoard, piece.piece, piece.row, piece.col);
 		if (moves.size() <= 0)
 			continue;
 

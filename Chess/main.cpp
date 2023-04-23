@@ -730,6 +730,8 @@ void keyFunction(unsigned char key, int x, int y)
                     if (chess->move(selectedRow, selectedCol, moveToRow, moveToCol))
                     {
                         std::shared_ptr<Piece> movedPiece = chess->getPiece(moveToRow, moveToCol);
+                        chess->getBlackPlayer()->m_gameMoves.push_back(PlaybookMove{ movedPiece->getType(), moveToCol, moveToRow });
+                        chess->getWhitePlayer()->m_gameMoves.push_back(PlaybookMove{ movedPiece->getType(), moveToCol, moveToRow });
                         if (movedPiece->getType() == PieceType::PAWN &&
                             ((movedPiece->getColor() == PieceColor::BLACK && moveToRow == chess->getBoard()->MIN_ROW_INDEX)
                                 || moveToRow == chess->getBoard()->MAX_ROW_INDEX))
@@ -857,6 +859,7 @@ void newGame()
 
 int main(int argc, char *argv[])
 {
+    srand(time(NULL));
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);

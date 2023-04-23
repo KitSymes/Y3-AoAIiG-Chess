@@ -4,6 +4,7 @@
 #include <vector>
 #include <memory>
 #include "Chess/Move.h"
+#include "Playbook.h"
 
 using namespace std;
 
@@ -36,6 +37,7 @@ public:
 	vector<std::shared_ptr<Move>>	getValidMovesForPiece(PieceInPostion pip);
 	bool			chooseAIMove(std::shared_ptr<Move>* moveToMake);
 
+	vector<PlaybookMove> m_gameMoves;
 protected:
 	PieceColor		getColour() { return m_colour; }
 
@@ -45,6 +47,8 @@ private:
 	GameStatus* m_pGameStatus;
 	Gameplay*	m_pGamePlay;
 	bool		m_bAI;
+	vector<Playbook> m_playbooks;
+	int m_maxPlaybookMoveCount;
 
 	int maximise(Board* board, GameStatus* status, std::shared_ptr<Move>* move, int depthLimit, int alpha, int beta);
 	int minimise(Board* board, GameStatus* status, std::shared_ptr<Move>* move, int depthLimit, int alpha, int beta);
